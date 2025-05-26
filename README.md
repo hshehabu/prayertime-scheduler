@@ -1,23 +1,27 @@
-# PrayerTime Scheduler
+# 🕌 PrayerTime Scheduler
+
+[![Python Version](https://img.shields.io/badge/python-3.6%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Windows](https://img.shields.io/badge/Windows-Supported-green.svg)](https://www.microsoft.com/windows)
 
 A Python utility that helps developers and PC users manage their work schedule around prayer times. The script automatically puts your PC to sleep 5 minutes before each prayer time, ensuring you don't miss your prayers while working.
 
-## Features
+## ✨ Features
 
-- Automatically fetches prayer times for your location
-- Puts PC to sleep 5 minutes before each prayer time
-- Caches prayer times to reduce API calls
-- Supports Windows operating system
-- Configurable city and calculation method
-- Built-in retry mechanism for API reliability
+- ⏰ Automatically fetches prayer times for your location
+- 💤 Puts PC to sleep 5 minutes before each prayer time
+- 💾 Caches prayer times to reduce API calls
+- 🪟 Supports Windows operating system
+- ⚙️ Configurable city and calculation method
+- 🔄 Built-in retry mechanism for API reliability
 
-## Requirements
+## 📋 Requirements
 
-- Python 3.6+
-- Windows operating system
-- Internet connection (for initial prayer time fetch)
+- 🐍 Python 3.6+
+- 🪟 Windows operating system
+- 🌐 Internet connection (for initial prayer time fetch)
 
-## Installation
+## 🚀 Installation
 
 1. Clone this repository:
 ```bash
@@ -30,15 +34,15 @@ cd prayer-time-scheduler
 pip install requests
 ```
 
-## Configuration
+## ⚙️ Configuration
 
 Edit the `CONFIG` dictionary in `sleep_before_athan.py` to customize:
-- `CITY`: Your city name
-- `COUNTRY`: Your country name
-- `METHOD`: Prayer time calculation method (default: 3 - Muslim World League)
-- `ALERT_MINUTES_BEFORE`: Minutes before prayer to put PC to sleep (default: 5)
+- 🏙️ `CITY`: Your city name
+- 🌍 `COUNTRY`: Your country name
+- 📏 `METHOD`: Prayer time calculation method (default: 3 - Muslim World League)
+- ⏱️ `ALERT_MINUTES_BEFORE`: Minutes before prayer to put PC to sleep (default: 5)
 
-## Usage
+## 💻 Usage
 
 Simply run the script:
 ```bash
@@ -46,18 +50,18 @@ python sleep_before_athan.py
 ```
 
 The script will:
-1. Fetch prayer times for your location
-2. Calculate the next prayer time
-3. Put your PC to sleep 5 minutes before the prayer time
-4. This gives you time to prepare for prayer without being distracted by work
+1. 📡 Fetch prayer times for your location
+2. ⏰ Calculate the next prayer time
+3. 💤 Put your PC to sleep 5 minutes before the prayer time
+4. 🧘 This gives you time to prepare for prayer without being distracted by work
 
-## Notes
+## 📝 Notes
 
-- The script uses the Aladhan API to fetch prayer times
-- Prayer times are cached for the current day to minimize API calls
-- You can cancel the sleep operation at any time using Ctrl+C
-- Perfect for developers and professionals who want to maintain their prayer schedule while working
+- 🔌 The script uses the Aladhan API to fetch prayer times
+- 💾 Prayer times are cached for the current day to minimize API calls
+- ⌨️ You can cancel the sleep operation at any time using Ctrl+C
+- 👨‍💻 Perfect for developers and professionals who want to maintain their prayer schedule while working
 
-## License
+## 📄 License
 
 MIT License 

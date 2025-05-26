@@ -7,6 +7,7 @@ from typing import Dict, Optional
 import sys
 import json
 from pathlib import Path
+import platform
 
 logging.basicConfig(
     level=logging.INFO,
@@ -109,8 +110,14 @@ def get_prayer_times() -> dict[str, datetime] | None:
 def sleep_pc() -> None:
     """Put the PC to sleep using the appropriate command for the OS."""
     try:
-        if os.name == 'nt':
+        current_os = platform.system()
+        if current_os == 'Windows':
             os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+        elif current_os == 'Linux':
+            os.system("sudo systemctl suspend")
+        else:
+            logging.error(f"Unsupported operating system: {current_os}")
+            sys.exit(1)
     except Exception as e:
         logging.error(f"Failed to put PC to sleep: {e}")
         sys.exit(1)

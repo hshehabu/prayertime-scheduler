@@ -62,6 +62,27 @@ The script will:
 - ⌨️ You can cancel the sleep operation at any time using Ctrl+C
 - 👨‍💻 Perfect for developers and professionals who want to maintain their prayer schedule while working
 
+## 🤝 Contributing
+
+This project is open source and we welcome contributions from the community! Whether you want to report a bug, suggest a feature, or submit a pull request, your help is appreciated.
+
+### How to Contribute
+
+1. Fork the repository
+2. Create a new branch for your feature (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Commit your changes (`git commit -m 'Add some amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+### Contribution Guidelines
+
+- Please ensure your code follows the existing style and formatting
+- Add comments to explain complex logic
+- Write clear commit messages
+- Update documentation if you add new features
+- Test your changes thoroughly
+
 ## 📄 License
 
 MIT License 

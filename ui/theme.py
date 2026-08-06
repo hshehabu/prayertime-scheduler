@@ -1,321 +1,371 @@
 from PySide6.QtWidgets import QApplication
 
-# ── Islamic-inspired colour palette ──
-#   Dark mode:  midnight blue-black surfaces, gold + emerald accents
-#   Light mode: warm ivory surfaces, deep green + gold accents
+# ─── Muted Earth-Tone Palette (from "Study Hard") ───
+# Primary:  #67504C (dark brown-mauve)    #C1B090 (warm tan/camel)
+# Neutral:  #DFE1E5 (cool light gray)    #C0B08C (warm khaki)
+# Accent:   #9C9E58 (olive/sage green)
+# Text:     #1B1B1B (near black)
 
-DARK_BG       = "#0D1117"
-DARK_CARD     = "#161B22"
-DARK_BORDER   = "#21262D"
-GOLD          = "#D4A843"
-GOLD_HOVER    = "#E0BE6A"
-EMERALD       = "#1FAB6F"
-EMERALD_DARK  = "#157A4E"
-CREAM         = "#FDF8EE"
-IVORY_CARD    = "#FFFFFF"
-LIGHT_BORDER  = "#D9CEB2"
-DEEP_GREEN    = "#145A32"
-TEXT_LIGHT    = "#E6EDF3"
-TEXT_DARK     = "#1C1C1C"
+# Dark-mode derived tones
+_D_BG        = "#2A2320"
+_D_CARD      = "#36302C"
+_D_BORDER    = "#4E4540"
+_D_TEXT      = "#E8E0D8"
+_D_MUTED     = "#9A8E84"
+
+# Light-mode tones
+_L_BG        = "#F2EDE8"
+_L_CARD      = "#FFFFFF"
+_L_BORDER    = "#D4C9B8"
+_L_TEXT      = "#1B1B1B"
+_L_MUTED     = "#7A6E64"
+
+# Shared accent colours
+TAN          = "#C1B090"
+BROWN        = "#67504C"
+OLIVE        = "#9C9E58"
+OLIVE_HOVER  = "#B0B268"
+KHAKI        = "#C0B08C"
 
 
-COMMON_STYLE = """
-    * {{
-        font-family: 'Segoe UI Variable', 'Segoe UI', sans-serif;
-    }}
-    QScrollBar:vertical {{
-        border: none; background: transparent; width: 8px;
-    }}
-    QScrollBar::handle:vertical {{
-        background-color: {gold}; min-height: 20px; border-radius: 4px;
-    }}
-    QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{
-        border: none; background: none;
-    }}
+# ── Shared scrollbar + font ──────────────────────────────────────────────────
+_COMMON = """
+* {{
+    font-family: 'Segoe UI Variable', 'Segoe UI', sans-serif;
+}}
+QScrollBar:vertical {{
+    border: none; background: transparent; width: 8px;
+}}
+QScrollBar::handle:vertical {{
+    background-color: {tan}; min-height: 20px; border-radius: 4px;
+}}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{
+    border: none; background: none;
+}}
+QScrollArea {{ border: none; }}
 """
 
 
-DARK_STYLE = COMMON_STYLE.format(gold=GOLD) + f"""
-    QWidget {{
-        background-color: {DARK_BG};
-        color: {TEXT_LIGHT};
-    }}
+# ═══════════════════════════════  DARK  ═══════════════════════════════════════
+DARK_STYLE = _COMMON.format(tan=TAN) + f"""
 
-    /* ── Cards ── */
-    .FluentCard, QGroupBox {{
-        background-color: {DARK_CARD};
-        border: 1px solid {DARK_BORDER};
-        border-radius: 12px;
-    }}
-    QGroupBox::title {{
-        color: {GOLD};
-        subcontrol-origin: margin;
-        padding: 4px 12px;
-        font-weight: bold;
-    }}
+/* ── Base ── */
+QWidget {{
+    background-color: {_D_BG};
+    color: {_D_TEXT};
+}}
 
-    /* ── Prayer Card (active) ── */
-    .ActivePrayerCard {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                     stop:0 {EMERALD_DARK}, stop:1 {EMERALD});
-        border: 2px solid {GOLD};
-        border-radius: 12px;
-        color: white;
-    }}
-    .PassedPrayerCard {{
-        background-color: {DARK_CARD};
-        border: 1px solid {DARK_BORDER};
-        border-radius: 12px;
-        opacity: 0.6;
-    }}
+/* ── Group Boxes (settings sections) ── */
+QGroupBox {{
+    background-color: {_D_CARD};
+    border: 1px solid {_D_BORDER};
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 24px 16px 16px 16px;
+    font-weight: bold;
+    font-size: 13px;
+}}
+QGroupBox::title {{
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 14px;
+    top: 4px;
+    padding: 2px 8px;
+    color: {TAN};
+    background-color: {_D_CARD};
+    border-radius: 4px;
+}}
 
-    /* ── Buttons ── */
-    QPushButton {{
-        background-color: {DARK_CARD};
-        border: 1px solid {DARK_BORDER};
-        border-radius: 8px;
-        padding: 8px 18px;
-        color: {TEXT_LIGHT};
-        font-weight: 500;
-    }}
-    QPushButton:hover {{
-        background-color: #21262D;
-        border-color: {GOLD};
-    }}
-    QPushButton:pressed {{
-        background-color: #0D1117;
-    }}
+/* ── Cards ── */
+.FluentCard {{
+    background-color: {_D_CARD};
+    border: 1px solid {_D_BORDER};
+    border-radius: 10px;
+}}
 
-    .ActionButton {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                     stop:0 {EMERALD_DARK}, stop:1 {EMERALD});
-        border: none;
-        color: white;
-        font-weight: bold;
-        border-radius: 8px;
-        padding: 10px 20px;
-    }}
-    .ActionButton:hover {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                     stop:0 {EMERALD}, stop:1 {GOLD});
-    }}
+.ActivePrayerCard {{
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                 stop:0 #4A4230, stop:1 #5C5438);
+    border: 2px solid {TAN};
+    border-radius: 10px;
+    color: {_D_TEXT};
+}}
+.PassedPrayerCard {{
+    background-color: {_D_CARD};
+    border: 1px solid {_D_BORDER};
+    border-radius: 10px;
+    color: {_D_MUTED};
+}}
 
-    /* ── Inputs ── */
-    QLineEdit, QComboBox, QSpinBox {{
-        background-color: {DARK_CARD};
-        border: 1px solid {DARK_BORDER};
-        border-radius: 6px;
-        padding: 6px 10px;
-        color: {TEXT_LIGHT};
-    }}
-    QLineEdit:focus, QComboBox:focus, QSpinBox:focus {{
-        border: 1px solid {GOLD};
-    }}
+/* ── Buttons ── */
+QPushButton {{
+    background-color: {_D_CARD};
+    border: 1px solid {_D_BORDER};
+    border-radius: 8px;
+    padding: 8px 18px;
+    color: {_D_TEXT};
+    font-weight: 500;
+}}
+QPushButton:hover {{
+    background-color: #443D38;
+    border-color: {TAN};
+}}
+QPushButton:pressed {{
+    background-color: #2A2320;
+}}
 
-    /* ── Tabs ── */
-    QTabWidget::pane {{
-        border: 1px solid {DARK_BORDER};
-        background: {DARK_BG};
-        border-radius: 12px;
-    }}
-    QTabBar::tab {{
-        background: {DARK_CARD};
-        padding: 10px 20px;
-        border: 1px solid {DARK_BORDER};
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-        margin-right: 2px;
-        color: {TEXT_LIGHT};
-    }}
-    QTabBar::tab:selected {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                     stop:0 {EMERALD_DARK}, stop:1 {EMERALD});
-        color: white;
-        border-bottom: 2px solid {GOLD};
-    }}
+.ActionButton {{
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                 stop:0 {OLIVE}, stop:1 {OLIVE_HOVER});
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px 20px;
+}}
+.ActionButton:hover {{
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                 stop:0 {OLIVE_HOVER}, stop:1 {TAN});
+}}
 
-    /* ── Hero / Countdown ── */
-    .HeroTime {{
-        color: {TEXT_LIGHT};
-    }}
-    .HeroCountdown {{
-        color: {GOLD};
-    }}
-    .LocationLabel {{
-        color: #8B949E;
-    }}
+/* ── Inputs ── */
+QLineEdit, QComboBox, QSpinBox {{
+    background-color: #2A2320;
+    border: 1px solid {_D_BORDER};
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: {_D_TEXT};
+    min-height: 20px;
+}}
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus {{
+    border: 1px solid {TAN};
+}}
+QComboBox::drop-down {{
+    border: none;
+    width: 24px;
+}}
+QComboBox QAbstractItemView {{
+    background-color: {_D_CARD};
+    border: 1px solid {_D_BORDER};
+    color: {_D_TEXT};
+    selection-background-color: {OLIVE};
+}}
 
-    /* ── Progress bar (snooze dialog) ── */
-    QProgressBar {{
-        background: {DARK_CARD};
-        border: 1px solid {DARK_BORDER};
-        border-radius: 6px;
-        height: 8px;
-    }}
-    QProgressBar::chunk {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                     stop:0 {EMERALD}, stop:1 {GOLD});
-        border-radius: 6px;
-    }}
+/* ── Tabs ── */
+QTabWidget::pane {{
+    border: 1px solid {_D_BORDER};
+    background: {_D_BG};
+    border-radius: 0 0 10px 10px;
+    top: -1px;
+}}
+QTabBar::tab {{
+    background: {_D_CARD};
+    padding: 10px 22px;
+    border: 1px solid {_D_BORDER};
+    border-bottom: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-right: 2px;
+    color: {_D_MUTED};
+    font-weight: 500;
+}}
+QTabBar::tab:selected {{
+    background: {BROWN};
+    color: {_D_TEXT};
+    border-color: {BROWN};
+}}
+QTabBar::tab:hover:!selected {{
+    background: #443D38;
+    color: {_D_TEXT};
+}}
 
-    /* ── Check / Radio ── */
-    QCheckBox {{
-        spacing: 8px;
-        color: {TEXT_LIGHT};
-    }}
-    QCheckBox::indicator {{
-        width: 18px; height: 18px;
-        border-radius: 4px;
-        border: 1px solid {DARK_BORDER};
-        background: {DARK_CARD};
-    }}
-    QCheckBox::indicator:checked {{
-        background: {EMERALD};
-        border-color: {GOLD};
-    }}
+/* ── Labels ── */
+.HeroTime {{ color: {_D_TEXT}; }}
+.HeroCountdown {{ color: {TAN}; }}
+.LocationLabel {{ color: {_D_MUTED}; }}
+
+/* ── Progress bar ── */
+QProgressBar {{
+    background: {_D_CARD};
+    border: 1px solid {_D_BORDER};
+    border-radius: 4px;
+    height: 6px;
+    text-align: center;
+}}
+QProgressBar::chunk {{
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                 stop:0 {OLIVE}, stop:1 {TAN});
+    border-radius: 4px;
+}}
+
+/* ── Checkbox ── */
+QCheckBox {{ spacing: 8px; color: {_D_TEXT}; }}
+QCheckBox::indicator {{
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1px solid {_D_BORDER}; background: {_D_BG};
+}}
+QCheckBox::indicator:checked {{
+    background: {OLIVE}; border-color: {TAN};
+}}
+
+/* ── Form labels ── */
+QLabel {{ background: transparent; }}
 """
 
 
-LIGHT_STYLE = COMMON_STYLE.format(gold="#B8860B") + f"""
-    QWidget {{
-        background-color: {CREAM};
-        color: {TEXT_DARK};
-    }}
+# ═══════════════════════════════  LIGHT  ══════════════════════════════════════
+LIGHT_STYLE = _COMMON.format(tan=BROWN) + f"""
 
-    .FluentCard, QGroupBox {{
-        background-color: {IVORY_CARD};
-        border: 1px solid {LIGHT_BORDER};
-        border-radius: 12px;
-    }}
-    QGroupBox::title {{
-        color: {DEEP_GREEN};
-        subcontrol-origin: margin;
-        padding: 4px 12px;
-        font-weight: bold;
-    }}
+QWidget {{
+    background-color: {_L_BG};
+    color: {_L_TEXT};
+}}
 
-    .ActivePrayerCard {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                     stop:0 {DEEP_GREEN}, stop:1 {EMERALD});
-        border: 2px solid #B8860B;
-        border-radius: 12px;
-        color: white;
-    }}
-    .PassedPrayerCard {{
-        background-color: #F0EBE0;
-        border: 1px solid {LIGHT_BORDER};
-        border-radius: 12px;
-    }}
+QGroupBox {{
+    background-color: {_L_CARD};
+    border: 1px solid {_L_BORDER};
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 24px 16px 16px 16px;
+    font-weight: bold;
+    font-size: 13px;
+}}
+QGroupBox::title {{
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 14px;
+    top: 4px;
+    padding: 2px 8px;
+    color: {BROWN};
+    background-color: {_L_CARD};
+    border-radius: 4px;
+}}
 
-    QPushButton {{
-        background-color: {IVORY_CARD};
-        border: 1px solid {LIGHT_BORDER};
-        border-radius: 8px;
-        padding: 8px 18px;
-        color: {TEXT_DARK};
-        font-weight: 500;
-    }}
-    QPushButton:hover {{
-        background-color: #F5EDD8;
-        border-color: {DEEP_GREEN};
-    }}
+.FluentCard {{
+    background-color: {_L_CARD};
+    border: 1px solid {_L_BORDER};
+    border-radius: 10px;
+}}
+.ActivePrayerCard {{
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                 stop:0 #D9CEB2, stop:1 {TAN});
+    border: 2px solid {BROWN};
+    border-radius: 10px;
+    color: {_L_TEXT};
+}}
+.PassedPrayerCard {{
+    background-color: #EDE8E2;
+    border: 1px solid {_L_BORDER};
+    border-radius: 10px;
+    color: {_L_MUTED};
+}}
 
-    .ActionButton {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                     stop:0 {DEEP_GREEN}, stop:1 {EMERALD});
-        border: none;
-        color: white;
-        font-weight: bold;
-        border-radius: 8px;
-        padding: 10px 20px;
-    }}
-    .ActionButton:hover {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                     stop:0 {EMERALD}, stop:1 #B8860B);
-    }}
+QPushButton {{
+    background-color: {_L_CARD};
+    border: 1px solid {_L_BORDER};
+    border-radius: 8px;
+    padding: 8px 18px;
+    color: {_L_TEXT};
+    font-weight: 500;
+}}
+QPushButton:hover {{
+    background-color: #E8E0D6;
+    border-color: {BROWN};
+}}
 
-    QLineEdit, QComboBox, QSpinBox {{
-        background-color: {IVORY_CARD};
-        border: 1px solid {LIGHT_BORDER};
-        border-radius: 6px;
-        padding: 6px 10px;
-        color: {TEXT_DARK};
-    }}
-    QLineEdit:focus, QComboBox:focus, QSpinBox:focus {{
-        border: 1px solid {DEEP_GREEN};
-    }}
+.ActionButton {{
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                 stop:0 {BROWN}, stop:1 {OLIVE});
+    border: none; color: white; font-weight: bold;
+    border-radius: 8px; padding: 10px 20px;
+}}
+.ActionButton:hover {{
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                 stop:0 {OLIVE}, stop:1 {TAN});
+}}
 
-    QTabWidget::pane {{
-        border: 1px solid {LIGHT_BORDER};
-        background: {CREAM};
-        border-radius: 12px;
-    }}
-    QTabBar::tab {{
-        background: {IVORY_CARD};
-        padding: 10px 20px;
-        border: 1px solid {LIGHT_BORDER};
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-        margin-right: 2px;
-    }}
-    QTabBar::tab:selected {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                     stop:0 {DEEP_GREEN}, stop:1 {EMERALD});
-        color: white;
-        border-bottom: 2px solid #B8860B;
-    }}
+QLineEdit, QComboBox, QSpinBox {{
+    background-color: {_L_CARD};
+    border: 1px solid {_L_BORDER};
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: {_L_TEXT};
+    min-height: 20px;
+}}
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus {{
+    border: 1px solid {BROWN};
+}}
+QComboBox::drop-down {{ border: none; width: 24px; }}
+QComboBox QAbstractItemView {{
+    background-color: {_L_CARD};
+    border: 1px solid {_L_BORDER};
+    color: {_L_TEXT};
+    selection-background-color: {TAN};
+}}
 
-    .HeroTime {{
-        color: {DEEP_GREEN};
-    }}
-    .HeroCountdown {{
-        color: #B8860B;
-    }}
-    .LocationLabel {{
-        color: #6B6B6B;
-    }}
+QTabWidget::pane {{
+    border: 1px solid {_L_BORDER};
+    background: {_L_BG};
+    border-radius: 0 0 10px 10px;
+    top: -1px;
+}}
+QTabBar::tab {{
+    background: {_L_CARD};
+    padding: 10px 22px;
+    border: 1px solid {_L_BORDER};
+    border-bottom: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-right: 2px;
+    color: {_L_MUTED};
+    font-weight: 500;
+}}
+QTabBar::tab:selected {{
+    background: {BROWN};
+    color: white;
+    border-color: {BROWN};
+}}
+QTabBar::tab:hover:!selected {{
+    background: #E8E0D6;
+    color: {_L_TEXT};
+}}
 
-    QProgressBar {{
-        background: #E8E0D0;
-        border: 1px solid {LIGHT_BORDER};
-        border-radius: 6px;
-        height: 8px;
-    }}
-    QProgressBar::chunk {{
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                     stop:0 {DEEP_GREEN}, stop:1 #B8860B);
-        border-radius: 6px;
-    }}
+.HeroTime {{ color: {BROWN}; }}
+.HeroCountdown {{ color: {OLIVE}; }}
+.LocationLabel {{ color: {_L_MUTED}; }}
 
-    QCheckBox {{
-        spacing: 8px;
-    }}
-    QCheckBox::indicator {{
-        width: 18px; height: 18px;
-        border-radius: 4px;
-        border: 1px solid {LIGHT_BORDER};
-        background: {IVORY_CARD};
-    }}
-    QCheckBox::indicator:checked {{
-        background: {DEEP_GREEN};
-        border-color: #B8860B;
-    }}
+QProgressBar {{
+    background: #E8E0D6;
+    border: 1px solid {_L_BORDER};
+    border-radius: 4px; height: 6px;
+}}
+QProgressBar::chunk {{
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+                 stop:0 {BROWN}, stop:1 {OLIVE});
+    border-radius: 4px;
+}}
+
+QCheckBox {{ spacing: 8px; }}
+QCheckBox::indicator {{
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1px solid {_L_BORDER}; background: {_L_CARD};
+}}
+QCheckBox::indicator:checked {{
+    background: {OLIVE}; border-color: {BROWN};
+}}
+
+QLabel {{ background: transparent; }}
 """
 
 
 class ThemeManager:
-    """Applies dark / light / system theme."""
+    """Applies muted earth-tone dark / light / system theme."""
 
     @classmethod
     def apply_theme(cls, theme_mode: str):
         app = QApplication.instance()
         if not app:
             return
-
         if theme_mode == "system":
-            theme_mode = "dark"  # Fallback; real detection would read Windows registry
-
-        if theme_mode == "dark":
-            app.setStyleSheet(DARK_STYLE)
-        else:
-            app.setStyleSheet(LIGHT_STYLE)
+            theme_mode = "dark"
+        app.setStyleSheet(DARK_STYLE if theme_mode == "dark" else LIGHT_STYLE)

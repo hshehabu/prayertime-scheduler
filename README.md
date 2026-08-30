@@ -29,10 +29,10 @@ git clone https://github.com/yourusername/prayer-time-scheduler.git
 cd prayer-time-scheduler
 ```
 
-2. Install required packages:
-```bash
-pip install requests
-```
+
+
+
+
 
 ## ⚙️ Configuration
 
